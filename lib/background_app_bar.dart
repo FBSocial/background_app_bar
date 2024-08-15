@@ -42,14 +42,15 @@ class _BackgroundFlexibleSpaceBarState
   bool _getEffectiveCenterTitle(final ThemeData theme) {
     if (widget.centerTitle != null) return widget.centerTitle!;
     switch (theme.platform) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return true;
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
       case TargetPlatform.windows:
+      default:
         return false;
-      case TargetPlatform.iOS:
-      case TargetPlatform.macOS:
-        return true;
     }
   }
 
@@ -118,6 +119,7 @@ class _BackgroundFlexibleSpaceBarState
         case TargetPlatform.fuchsia:
         case TargetPlatform.linux:
         case TargetPlatform.windows:
+        default:
           title = Semantics(
             namesRoute: true,
             child: widget.title,
