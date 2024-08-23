@@ -41,17 +41,8 @@ class _BackgroundFlexibleSpaceBarState
     extends State<BackgroundFlexibleSpaceBar> {
   bool _getEffectiveCenterTitle(final ThemeData theme) {
     if (widget.centerTitle != null) return widget.centerTitle!;
-    switch (theme.platform) {
-      case TargetPlatform.iOS:
-      case TargetPlatform.macOS:
-        return true;
-      case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-      case TargetPlatform.linux:
-      case TargetPlatform.windows:
-      default:
-        return false;
-    }
+
+    return [TargetPlatform.iOS, TargetPlatform.macOS].contains(theme.platform);
   }
 
   Alignment _getTitleAlignment(final bool effectiveCenterTitle) {
@@ -110,23 +101,14 @@ class _BackgroundFlexibleSpaceBarState
       final ThemeData theme = Theme.of(context);
 
       Widget title;
-      switch (theme.platform) {
-        case TargetPlatform.iOS:
-        case TargetPlatform.macOS:
-          title = widget.title!;
-          break;
-        case TargetPlatform.android:
-        case TargetPlatform.fuchsia:
-        case TargetPlatform.linux:
-        case TargetPlatform.windows:
-        default:
-          title = Semantics(
-            namesRoute: true,
-            child: widget.title,
-          );
-          break;
+      if ([TargetPlatform.iOS, TargetPlatform.macOS].contains(theme.platform)) {
+        title = widget.title!;
+      } else {
+        title = Semantics(
+          namesRoute: true,
+          child: widget.title,
+        );
       }
-
       final bool effectiveCenterTitle =
           _getEffectiveCenterTitle(Theme.of(context));
       final EdgeInsetsGeometry padding = widget.titlePadding ??
